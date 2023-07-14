@@ -1,0 +1,46 @@
+{
+  "name": "@airgap/rootstock",
+  "version": "1.0.0",
+  "description": "The @airgap/rootstock is an Rootstock implementation of the ICoinProtocol interface from @airgap/coinlib-core.",
+  "keywords": [
+    "airgap",
+    "blockchain",
+    "crypto",
+    "ethereum",
+    "rootstock"
+  ],
+  "license": "MIT",
+  "homepage": "https://rootstock.io/",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/rsksmart/airgap-iso-rootstock"
+  },
+  "publishConfig": {
+    "access": "public"
+  },
+  "scripts": {
+    "build": "rm -rf ./dist && tsc && node scripts/copy-files-after-build.js",
+    "build-scripts": "tsc scripts/*.ts",
+    "lint": "tslint -c ./tslint.json --project ./tsconfig.json --format stylish --fix",
+    "lint:prettier": "prettier --write \"src/**/*.ts\" \"test/**/*.ts\"",
+    "lint-ci": "tslint -t json -o ../../lint-reports/rootstock.json --project . || true",
+    "lint-ci:prettier": "prettier \"src/**/*.ts\" \"test/**/*.ts\" --list-different",
+    "browserify": "browserify ./dist/index.js -s rootstock > ./dist/airgap-coinlib-rootstock.min.js"
+  },
+  "author": "IOVLabs <info@iovlabs.org> (https://www.iovlabs.org)",
+  "dependencies": {
+    "@airgap/coinlib-core": "*",
+    "@airgap/crypto": "*",
+    "@airgap/ethereum": "*",
+    "@airgap/module-kit": "*",
+    "@airgap/serializer": "*",
+    "@ethereumjs/tx": "3.4.0"
+  },
+  "devDependencies": {
+    "@types/node": "14.14.14",
+    "browserify": "17.0.0",
+    "husky": "5.1.3",
+    "lerna": "6.4.1",
+    "typescript": "4.8.4"
+  }
+}
