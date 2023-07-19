@@ -1,82 +1,67 @@
-// Factory
+import { MainProtocolSymbols } from '../../types/protocol'
+// @ts-ignore
+import * as ethUtil from '@airgap/coinlib-core/dependencies/src/ethereumjs-util-5.2.0'
+import { AirGapInterface, RecursivePartial, implementsInterface } from '@airgap/module-kit'
 
-import { MainProtocolSymbols } from '@airgap/coinlib-core'
-import {
-  ERC20TokenImpl as EthereumERC20TokenImpl,
-  ERC20TokenMetadata,
-  ERC20TokenOptions,
-  EthereumProtocolNetwork,
-  EtherscanInfoClient
-} from '@airgap/ethereum/v1'
-import { AirGapInterface, implementsInterface, RecursivePartial } from '@airgap/module-kit'
+import { RootstockInfoClient } from '../../client/info/RootstockInfoClient'
+import { EtherscanInfoClient } from '@airgap/ethereum/v1/clients/info/EtherscanInfoClient';
 
 import { AirGapNodeClient } from '../../client/node/AirGapNodeClient'
-import { RootstockProtocolNetwork, RootstockProtocolOptions } from '../../types/protocol'
-import { RootstockBaseProtocol, RootstockBaseProtocolImpl } from '../RootstockBaseProtocol'
+import { RootstockNodeClient } from '../../client/node/RootstockNodeClient'
+import { ERC20TokenMetadata, ERC20TokenOptions, EthereumProtocolNetwork } from '@airgap/ethereum/v1/types/protocol'
 import { ROOTSTOCK_MAINNET_PROTOCOL_NETWORK } from '../RootstockProtocol'
+import { RootstockProtocolNetwork } from '../../types/protocol'
+import { ERC20Protocol, ERC20ProtocolImpl } from './ERC20Protocol'
 
 // Interface
 
-export interface ERC20Token extends AirGapInterface<RootstockBaseProtocol<string>, 'SingleTokenSubProtocol'> {
-  name(): Promise<string | undefined>
-  symbol(): Promise<string | undefined>
-  decimals(): Promise<number | undefined>
-
-  tokenMetadata(): Promise<ERC20TokenMetadata>
-}
+export interface ERC20Token<_ProtocolNetwork extends RootstockProtocolNetwork = RootstockProtocolNetwork>
+  extends AirGapInterface<ERC20Protocol<string, _ProtocolNetwork>, 'SingleTokenSubProtocol'> {
+    name(): Promise<string | undefined>
+    symbol(): Promise<string | undefined>
+    decimals(): Promise<number | undefined>
+  
+    tokenMetadata(): Promise<ERC20TokenMetadata>
+  }
 
 // Implementation
 
-class ERC20TokenImpl
-  extends RootstockBaseProtocolImpl<string, EthereumERC20TokenImpl<RootstockProtocolNetwork>, ERC20TokenOptions<RootstockProtocolNetwork>>
-  implements ERC20Token
-{
-  constructor(options: ERC20TokenOptions<RootstockProtocolNetwork>) {
-    const nodeClient = new AirGapNodeClient(options.network.rpcUrl)
-    const infoClient = new EtherscanInfoClient(options.network.blockExplorerApi)
+export class ERC20TokenImpl<_ProtocolNetwork extends RootstockProtocolNetwork = RootstockProtocolNetwork>
+  extends ERC20ProtocolImpl<string, _ProtocolNetwork>
+  implements ERC20Token<_ProtocolNetwork> {
 
-    const ethereumProtocol = new EthereumERC20TokenImpl(nodeClient, infoClient, options)
+  public constructor(nodeClient: RootstockNodeClient, infoClient: RootstockInfoClient, options: ERC20TokenOptions<_ProtocolNetwork>) {
+    super(nodeClient, infoClient, options)
 
-    super(ethereumProtocol, nodeClient, infoClient, options)
+    this._mainProtocol = options.mainIdentifier
+    //super.options.mainUnit
   }
 
   // SubProtocol
 
   public async getType(): Promise<'token'> {
-    return this.ethereumProtocol.getType()
+    return 'token'
   }
 
+  private readonly _mainProtocol: string
   public async mainProtocol(): Promise<string> {
-    return this.ethereumProtocol.mainProtocol()
+    return this._mainProtocol
   }
 
   public async getContractAddress(): Promise<string> {
-    return this.ethereumProtocol.getContractAddress()
-  }
-
-  // Custom
-
-  public async name(): Promise<string | undefined> {
-    return this.ethereumProtocol.name()
-  }
-
-  public async symbol(): Promise<string | undefined> {
-    return this.ethereumProtocol.symbol()
-  }
-
-  public async decimals(): Promise<number | undefined> {
-    return this.ethereumProtocol.decimals()
+    return this.contractAddress
   }
 
   public async tokenMetadata(): Promise<ERC20TokenMetadata> {
-    const mainUnit = this.options.units[this.options.mainUnit]
+    const metaData = await this.getMetadata();
+    const mainUnit = metaData.units[this.metadata.mainUnit]
 
     return {
-      name: this.options.name,
-      identifier: this.options.identifier,
+      name: metaData.name,
+      identifier: metaData.identifier,
       symbol: mainUnit.symbol.value,
       marketSymbol: mainUnit.symbol.market ?? mainUnit.symbol.value,
-      contractAddress: this.options.contractAddress,
+      contractAddress: await this.getContractAddress(),
       decimals: mainUnit.decimals
     }
   }
@@ -84,28 +69,42 @@ class ERC20TokenImpl
 
 // Factory
 
-export function createERC20Token(metadata: ERC20TokenMetadata, options: RecursivePartial<RootstockProtocolOptions> = {}): ERC20Token {
-  const completeOptions = createERC20TokenOptions(metadata, options.network)
+type ERC20TokenOptionsWithoutMetadata = Omit<
+  ERC20TokenOptions,
+  'name' | 'identifier' | 'contractAddress' | 'symbol' | 'marketSymbol' | 'decimals'
+>
 
-  return new ERC20TokenImpl(completeOptions)
+export function createERC20Token(
+  metadata: ERC20TokenMetadata,
+  options: RecursivePartial<ERC20TokenOptionsWithoutMetadata> = {}
+): ERC20Token {
+  const completeOptions: ERC20TokenOptions = createERC20TokenOptions(metadata, options.network, options.mainIdentifier)
+
+  return new ERC20TokenImpl(
+    new AirGapNodeClient(completeOptions.network.rpcUrl),
+    new EtherscanInfoClient(completeOptions.network.blockExplorerApi),
+    completeOptions
+  )
 }
 
-export const ROOTSTOCK_ERC20_MAINNET_PROTOCOL_NETWORK: RootstockProtocolNetwork = ROOTSTOCK_MAINNET_PROTOCOL_NETWORK
+export const ROOTSTOCK_ERC20_MAINNET_PROTOCOL_NETWORK: RootstockProtocolNetwork = {
+  ...ROOTSTOCK_MAINNET_PROTOCOL_NETWORK
+}
 
-const DEFAULT_ERC20_PROTOCOL_NETWORK: RootstockProtocolNetwork = ROOTSTOCK_ERC20_MAINNET_PROTOCOL_NETWORK
+const DEFAULT_ERC20_PROTOCOL_NETWORK: EthereumProtocolNetwork = ROOTSTOCK_ERC20_MAINNET_PROTOCOL_NETWORK
 
 export function createERC20TokenOptions(
   metadata: ERC20TokenMetadata,
-  network: Partial<EthereumProtocolNetwork> = {}
-): ERC20TokenOptions<RootstockProtocolNetwork> {
+  network: Partial<EthereumProtocolNetwork> = {},
+  mainIdentifier?: string
+): ERC20TokenOptions {
   return {
     network: { ...DEFAULT_ERC20_PROTOCOL_NETWORK, ...network },
     name: metadata.name,
     identifier: metadata.identifier,
-    mainIdentifier: MainProtocolSymbols.ROOTSTOCK,
+    mainIdentifier: mainIdentifier ?? MainProtocolSymbols.ROOTSTOCK,
 
     contractAddress: metadata.contractAddress,
-
     units: {
       [metadata.symbol]: {
         symbol: { value: metadata.symbol, market: metadata.marketSymbol },
@@ -115,6 +114,7 @@ export function createERC20TokenOptions(
     mainUnit: metadata.symbol
   }
 }
+
 
 // Serializer
 

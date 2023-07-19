@@ -9,38 +9,6 @@ npm >= 6
 NodeJS >= 12
 ```
 
-## Getting started
-- Clone the official: [airgap-coin-lib](https://github.com/airgap-it/airgap-coin-lib)
-- After running `npm install` 
-- Copy/Paste this repo(airgap-iso-rootstock) inside packages
-- Add below changes in core and ethereum package
-- coinlib-core:
-  - Add rootstock option in Domain enum 
-  - Add rootstock option in MainProtocolSymbols: ROOTSTOCK = 'rbtc',
-  - Add rootstock option in SubProtocolSymbols:  RBTC_ERC20 = 'rbtc-erc20'
-  - Add rootstock option in deriveAddresses function next to ETH
-  - Similarly for networks.ts file add below line:
-```
-networks.rootstock = {
-  messagePrefix: '\x19Rootstock Signed Message:\n',
-  bip32: {
-    public: 0xffffffff,
-    private: 0xffffffff
-  },
-  scriptHash: 13,
-  pubKeyHash: 0xff,
-  wif: 0xff,
-  ethereum: true
-}
-```
-
-- ethereum:
-  - Add these changes to ethereum package
-  - In ethereum base protocol file change hard coded `ETH` fee label to `RBTC`
-  - That's it
-
-Build dependencies get installed using `npm install`.
-
 ### Build
 
 ```
@@ -48,7 +16,14 @@ $ git clone https://github.com/rsksmart/airgap-iso-rootstock
 $ cd airgap-iso-rootstock
 $ npm install
 $ npm run build
+$ npm run test
 ```
+
+### Generate isolated module
+```
+$ npm run browserify
+```
+See module folder for browserify output
 
 ### Contributing
 

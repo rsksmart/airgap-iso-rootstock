@@ -7,6 +7,8 @@ import {
   fetchDataForAddressProtocolSchema,
   fetchDataForMultipleAddressesProtocolSchema,
   implementsInterface,
+  getTokenBalancesSchema,
+  walletConnectProtocolSchema,
   offlineProtocolSchema,
   onlineProtocolSchema,
   Schema,
@@ -31,10 +33,13 @@ export const rootstockBaseProtocolSchema: Schema<RootstockBaseProtocol> = {
   ...signMessageOfflineSchema,
   ...fetchDataForAddressProtocolSchema,
   ...fetchDataForMultipleAddressesProtocolSchema,
-  ...transactionStatusCheckerSchema
+  ...getTokenBalancesSchema,
+  ...transactionStatusCheckerSchema,
+  ...walletConnectProtocolSchema
 }
 
 export const rootstockProtocolSchema: Schema<RootstockProtocol> = {
+  
   ...rootstockBaseProtocolSchema
 }
 
