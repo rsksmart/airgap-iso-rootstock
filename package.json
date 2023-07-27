@@ -1,7 +1,7 @@
 {
-  "name": "@airgap/rootstock",
+  "name": "@iovlabs/rootstock",
   "version": "1.0.0",
-  "description": "The @airgap/rootstock is an Rootstock implementation of the ICoinProtocol interface from @airgap/coinlib-core.",
+  "description": "The @iovlabs/rootstock is an Rootstock implementation of the ICoinProtocol interface from @airgap/coinlib-core.",
   "keywords": [
     "airgap",
     "blockchain",
