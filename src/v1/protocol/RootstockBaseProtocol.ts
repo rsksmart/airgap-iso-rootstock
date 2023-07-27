@@ -133,9 +133,9 @@ export class RootstockBaseProtocolImpl<
 
     this.feeDefaults = {
       // https://stats.rsk.co/
-      low: newAmount(1244.04 /* 21000 GAS * 0.05924 Gwei */, 'RBTC').blockchain(DEFAULT_ROOTSTOCK_UNITS_METADATA),
-      medium: newAmount(1866.06 /* 21000 GAS * 0.05924 * 1.5 Gwei */, 'RBTC').blockchain(DEFAULT_ROOTSTOCK_UNITS_METADATA),
-      high: newAmount(2488.08 /* 21000 GAS *  0.05924 * 2 Gwei */, 'RBTC').blockchain(DEFAULT_ROOTSTOCK_UNITS_METADATA)
+      low: newAmount(0.00000124404 /* 21000 GAS * 0.05924 Gwei */, 'RBTC').blockchain(DEFAULT_ROOTSTOCK_UNITS_METADATA),
+      medium: newAmount(0.00000186606 /* 21000 GAS * 0.05924 * 1.5 Gwei */, 'RBTC').blockchain(DEFAULT_ROOTSTOCK_UNITS_METADATA),
+      high: newAmount(0.00000248808 /* 21000 GAS *  0.05924 * 2 Gwei */, 'RBTC').blockchain(DEFAULT_ROOTSTOCK_UNITS_METADATA)
     },
 
     this.metadata = {
