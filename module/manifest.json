@@ -1,0 +1,27 @@
+{
+  "name": "@iovlabs/rootstock",
+  "version": "1.0.0",
+  "author": "IOVLabs",
+  "url": "https://www.iovlabs.org",
+  "email": "info@iovlabs.org",
+  "publicKey": "0x86e0cc08a90a9cc85fbd5c3256643c2f166df3d55047bcee67242c240ad7a52f",
+  "description": "Isolated Rootstock module for Airgap wallet and vault application",
+  "src": {
+    "namespace": "rootstock"
+  },
+  "res": {
+	  "symbol": {
+		  "rbtc": "file://rbtc.svg",
+		  "rif": "file://rif.svg"
+	  }
+  },
+  "include": [
+    "index.browserify.js",
+	  "rbtc.svg",
+	  "rif.svg"
+  ],
+  "jsenv": {
+    "ios": "webview",
+    "android": "webview"
+  }
+}
