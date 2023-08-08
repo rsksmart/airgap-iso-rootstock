@@ -31,11 +31,11 @@
   },
   "author": "IOVLabs <info@iovlabs.org> (https://www.iovlabs.org)",
   "dependencies": {
-    "@airgap/coinlib-core": "0.13.19-beta.7",
-    "@airgap/crypto": "0.13.19-beta.7",
-    "@airgap/ethereum": "0.13.19-beta.7",
-    "@airgap/module-kit": "0.13.19-beta.7",
-    "@airgap/serializer": "0.13.19-beta.7",
+    "@airgap/coinlib-core": "0.13.19",
+    "@airgap/crypto": "0.13.19",
+    "@airgap/ethereum": "0.13.19",
+    "@airgap/module-kit": "0.13.19",
+    "@airgap/serializer": "0.13.19",
     "@ethereumjs/tx": "3.4.0"
   },
   "devDependencies": {
@@ -49,6 +49,7 @@
     "@types/pako": "1.0.1",
     "@types/semver": "6.0.2",
     "@types/underscore": "1.8.9",
+    "@polkadot/util": "2.0.1",
     "ajv": "6.10.2",
     "axios": "0.20.0",
     "axios-mock-adapter": "^1.18.2",
@@ -68,7 +69,8 @@
     "ts-node": "8.5.0",
     "tslint": "5.20.1",
     "tslint-config-prettier": "1.18.0",
-    "tslint-config-valorsoft": "2.2.1"
+    "tslint-config-valorsoft": "2.2.1",
+    "typescript": "4.8.4"
   },
   "nyc": {
     "include": [
