@@ -4,5 +4,16 @@ export interface RootstockProtocolNetwork extends EthereumProtocolNetwork {}
 
 export interface RootstockProtocolOptions extends EthereumProtocolOptions<RootstockProtocolNetwork> {}
 
-export type RootstockUnits = 'RBTC' | 'ETH' | 'GWEI' | 'WEI'
+export type RootstockUnits = 'RBTC'
 
+export enum MainProtocolSymbols {
+  ROOTSTOCK = 'rbtc'
+}
+
+export enum SubProtocolSymbols {
+  RBTC_ERC20 = 'rbtc-erc20'
+}
+
+export enum Domain {
+  ROOTSTOCK = 'ROOTSTOCK'
+}

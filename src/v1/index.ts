@@ -13,8 +13,10 @@ import {
 } from './types/transaction'
 import { erc20Tokens } from './module/ERC20Tokens'
 import { isAnyRootstockProtocol, isRootstockERC20Token, isRootstockProtocol } from './utils/protocol'
+import { RootstockUnits } from './types/protocol'
+import { AirGapNodeClient } from './client/node/AirGapNodeClient'
 import { RootstockTransactionSignRequest } from './serializer/v3/schemas/definitions/transaction-sign-request-rootstock'
-
+import { EtherscanBlockExplorer } from '../v1/block-explorer/EtherscanBlockExplorer'
 // Module
 
 export { RootstockModule }
@@ -25,7 +27,9 @@ export { create }
 
 // Protocol
 
-export { RootstockProtocol, createRootstockProtocol, ERC20Token, createERC20Token }
+export { RootstockProtocol, RootstockUnits, AirGapNodeClient, createRootstockProtocol, ERC20Token, createERC20Token }
+
+export { EtherscanBlockExplorer }
 
 // Types
 

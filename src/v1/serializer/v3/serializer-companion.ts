@@ -1,5 +1,4 @@
-import { Domain, MainProtocolSymbols, SubProtocolSymbols } from '@airgap/coinlib-core'
-import { UnsupportedError } from '@airgap/coinlib-core/errors'
+import { MainProtocolSymbols, SubProtocolSymbols } from '../../types/protocol'
 import { AirGapV3SerializerCompanion, SignedTransaction, UnsignedTransaction } from '@airgap/module-kit'
 import { V3SchemaConfiguration } from '@airgap/module-kit/types/serializer'
 import { IACMessageType, SchemaRoot, TransactionSignRequest, TransactionSignResponse } from '@airgap/serializer'
@@ -60,7 +59,7 @@ export class RootstockV3SerializerCompanion implements AirGapV3SerializerCompani
       case SubProtocolSymbols.RBTC_ERC20:
         return rootstockUnsignedTransactionToRequest(unsignedTransaction as RootstockUnsignedTransaction, publicKey, callbackUrl)
       default:
-        throw new UnsupportedError(Domain.ROOTSTOCK, `Protocol ${identifier} not supported`)
+        throw new Error(`Protocol ${identifier} not supported`)
     }
   }
 
@@ -73,7 +72,7 @@ export class RootstockV3SerializerCompanion implements AirGapV3SerializerCompani
       case SubProtocolSymbols.RBTC_ERC20:
         return rootstockTransactionSignRequestToUnsigned(transactionSignRequest)
       default:
-        throw new UnsupportedError(Domain.ROOTSTOCK, `Protocol ${identifier} not supported`)
+        throw new Error(`Protocol ${identifier} not supported`)
     }
   }
 
@@ -89,7 +88,7 @@ export class RootstockV3SerializerCompanion implements AirGapV3SerializerCompani
           return false
         }
       default:
-        throw new UnsupportedError(Domain.ROOTSTOCK, `Protocol ${identifier} not supported`)
+        throw new Error(`Protocol ${identifier} not supported`)
     }
   }
 
@@ -103,7 +102,7 @@ export class RootstockV3SerializerCompanion implements AirGapV3SerializerCompani
       case SubProtocolSymbols.RBTC_ERC20:
         return rootstockSignedTransactionToResponse(signedTransaction as RootstockSignedTransaction, accountIdentifier)
       default:
-        throw new UnsupportedError(Domain.ROOTSTOCK, `Protocol ${identifier} not supported`)
+        throw new Error(`Protocol ${identifier} not supported`)
     }
   }
 
@@ -116,7 +115,7 @@ export class RootstockV3SerializerCompanion implements AirGapV3SerializerCompani
       case SubProtocolSymbols.RBTC_ERC20:
         return rootstockTransactionSignResponseToSigned(transactionSignResponse)
       default:
-        throw new UnsupportedError(Domain.ROOTSTOCK, `Protocol ${identifier} not supported`)
+        throw new Error(`Protocol ${identifier} not supported`)
     }
   }
 
@@ -132,7 +131,7 @@ export class RootstockV3SerializerCompanion implements AirGapV3SerializerCompani
           return false
         }
       default:
-        throw new UnsupportedError(Domain.ROOTSTOCK, `Protocol ${identifier} not supported`)
+        throw new Error(`Protocol ${identifier} not supported`)
     }
   }
 }

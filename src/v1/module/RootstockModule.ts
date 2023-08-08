@@ -1,5 +1,4 @@
-import { Domain, MainProtocolSymbols, SubProtocolSymbols } from '@airgap/coinlib-core'
-import { ConditionViolationError } from '@airgap/coinlib-core/errors'
+import { MainProtocolSymbols, SubProtocolSymbols } from '../types/protocol'
 import { ERC20TokenMetadata, EtherscanBlockExplorer } from '@airgap/ethereum/v1'
 import {
   AirGapAnyProtocol,
@@ -67,7 +66,7 @@ export class RootstockModule implements AirGapModule<{}, 'ProtocolSerializer'> {
       typeof networkOrId === 'object' ? networkOrId : this.networkRegistries[identifier]?.findNetwork(networkOrId)
 
     if (network === undefined) {
-      throw new ConditionViolationError(Domain.ROOTSTOCK, 'Protocol network type not supported.')
+      throw new Error('Protocol network type not supported.')
     }
 
     return this.createProtocol(identifier, network)
@@ -81,7 +80,7 @@ export class RootstockModule implements AirGapModule<{}, 'ProtocolSerializer'> {
       typeof networkOrId === 'object' ? networkOrId : this.networkRegistries[identifier]?.findNetwork(networkOrId)
 
     if (network === undefined) {
-      throw new ConditionViolationError(Domain.ROOTSTOCK, 'Block Explorer network type not supported.')
+      throw new Error('Block Explorer network type not supported.')
     }
 
     return new EtherscanBlockExplorer(network.blockExplorerUrl)
@@ -102,7 +101,7 @@ export class RootstockModule implements AirGapModule<{}, 'ProtocolSerializer'> {
       return createERC20Token(tokenMetadata)
     }
 
-    throw new ConditionViolationError(Domain.ROOTSTOCK, `Protocol ${identifier} not supported.`)
+    throw new Error(`Protocol ${identifier} not supported.`)
   }
 
   // ProtocolSerializer

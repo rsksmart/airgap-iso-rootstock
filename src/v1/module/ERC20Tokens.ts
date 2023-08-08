@@ -1,6 +1,6 @@
 // tslint:disable: max-file-line-count
 import { ERC20TokenMetadata } from '@airgap/ethereum/v1'
-import { SubProtocolSymbols } from '@airgap/coinlib-core'
+import { SubProtocolSymbols } from '../types/protocol'
 
 export const erc20Tokens: Record<string, ERC20TokenMetadata> = {
   'rbtc-erc20': {

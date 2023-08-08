@@ -44,4 +44,4 @@ findFilesOnLevel('./src/v1/serializer/v3/schemas/generated')
   .catch(console.error)
 
 copyFileSync('./package.json', './dist/package.json')
-copyFileSync('./readme.md', './dist/readme.md')
+copyFileSync('./README.md', './dist/README.md')

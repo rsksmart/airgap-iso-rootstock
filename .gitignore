@@ -69,3 +69,9 @@ lint-reports
 dist/
 
 config.ts
+
+module/index.browserify.js
+
+cp.sh
+	
+rootstock.zip
